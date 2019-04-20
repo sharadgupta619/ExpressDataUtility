@@ -1,0 +1,86 @@
+---------------------------------------------------------------------------------------Hive Preparation
+-----Create hive database
+create database if not exists db_stage;
+use db_stage;
+
+-----Remove hdfs table directories
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/user_personal
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/user_professional
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/user_personal_bd
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/user_professional_bd
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/user_personal_bdbd
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/user_professional_bdbd
+
+-----Create hdfs table directories
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_personal
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_professional
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_personal_bd
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_professional_bd
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_personal_bdbd
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_professional_bdbd
+
+-----Generate data files by running DataGenerator
+
+-----drop all input tables
+drop table if exists db_stage.cockatoos_user_personal;
+drop table if exists db_stage.cockatoos_user_professional;
+drop table if exists db_stage.cockatoos_user_personal_bd;
+drop table if exists db_stage.cockatoos_user_professional_bd;
+drop table if exists db_stage.cockatoos_user_personal_bdbd;
+drop table if exists db_stage.cockatoos_user_professional_bdbd;
+
+-----Copy data files
+hdfs dfs -copyFromLocal data_files/user_personal_small.csv /user/cloudera/pratik/cockatoos_testing/user_personal/
+hdfs dfs -copyFromLocal data_files/user_professional_small.csv /user/cloudera/pratik/cockatoos_testing/user_professional/
+hdfs dfs -copyFromLocal data_files/user_personal_bd.csv /user/cloudera/pratik/cockatoos_testing/user_personal_bd/
+hdfs dfs -copyFromLocal data_files/user_professional_bd.csv /user/cloudera/pratik/cockatoos_testing/user_professional_bd/
+hdfs dfs -copyFromLocal data_files/user_personal_bdbd.csv /user/cloudera/pratik/cockatoos_testing/user_personal_bdbd/
+hdfs dfs -copyFromLocal data_files/user_professional_bdbd.csv /user/cloudera/pratik/cockatoos_testing/user_professional_bdbd/
+
+-----Create hive tables for small data
+drop table if exists db_stage.cockatoos_user_personal;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_personal(id int, name string, age int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_personal';
+
+drop table if exists db_stage.cockatoos_user_professional;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_professional(id int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_professional';
+
+-----Create hive tables for big data
+drop table if exists db_stage.cockatoos_user_personal_bd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_personal_bd(id int, name string, age int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_personal_bd';
+
+drop table if exists db_stage.cockatoos_user_professional_bd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_professional_bd(id int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_professional_bd';
+
+-----Create hive tables for very big data
+drop table if exists db_stage.cockatoos_user_personal_bdbd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_personal_bdbd(id int, name string, age int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_personal_bdbd';
+
+drop table if exists db_stage.cockatoos_user_professional_bdbd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_professional_bdbd(id int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_professional_bdbd';
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+

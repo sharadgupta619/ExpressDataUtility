@@ -1,0 +1,1 @@
+spark2-submit --jars connectors/mysql-connector-java-5.1.47.jar --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c cockatoos.yaml

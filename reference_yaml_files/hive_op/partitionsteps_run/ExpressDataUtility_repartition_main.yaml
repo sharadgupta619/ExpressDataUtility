@@ -1,0 +1,20 @@
+steps:
+  - stepName: step1
+    sql: SELECT
+      column1,column2
+      FROM
+      db.sometable
+    repartition: 1
+  - stepName: step2
+    sql: SELECT
+      cloumn3,column4
+      FROM
+      db.sometable1 join step1 on step1.column1=db.sometable1
+output:
+  - stepName: step2
+    outputType: Hive
+    outputOptions:
+      tableName: sometargettablename
+      schemaName: targetdb
+      saveMode: Overwrite
+      execProperties: hive.exec.dynamic.partition=true;hive.exec.dynamic.partition.mode=nonstrict

@@ -1,0 +1,9 @@
+metrics:
+- cockatoos_metric_repartition.yaml
+variables:
+output:
+  hive:
+explain: true
+logLevel: INFO
+appName: Cockatoos_Hive_OP_PartitionSteps_Run
+showPreviewLines: 10

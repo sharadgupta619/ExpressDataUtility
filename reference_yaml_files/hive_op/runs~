@@ -1,0 +1,26 @@
+1.Normal Run
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c hive_op/normal_run/cockatoos.yaml
+
+2.BigData Run (Partitioned table)
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c hive_op/bigdata_run/cockatoos.yaml
+
+3.Partition output tables Run
+Run above
+
+4.Partitioned steps Run
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c hive_op/partitionsteps_run/cockatoos.yaml
+
+5.Table defination create Run
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c hive_op/tableDefination_run/cockatoos.yaml
+
+6.Upper-Lower case run
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c hive_op/case_run/cockatoos.yaml
+
+7.Caching step run
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c hive_op/caching_run/cockatoos.yaml
+
+8.Cluster mode run
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode cluster --num-executors 2 --executor-memory 2G --executor-cores 2 --files hive_op/cluster_run/cockatoos.yaml,hive_op/cluster_run/cockatoos_metric.yaml --jars cockatoos-0.0.1-SNAPSHOT-shaded.jar --class com.datametica.cockatoos.Cockatoos cockatoos-0.0.1-SNAPSHOT-shaded.jar -c cockatoos.yaml
+
+9.Variable replacement
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos /home/cloudera/cockatoos_testing/cockatoos-0.0.1-SNAPSHOT-shaded.jar -c hive_op/caching_run/cockatoos.yaml

@@ -1,0 +1,9 @@
+metrics:
+  - <Path of your main YAML file>
+variables:
+output:
+  hive:
+explain: true
+logLevel: INFO
+appName: anyappname
+showPreviewLines: 10

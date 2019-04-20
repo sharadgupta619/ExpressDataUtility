@@ -1,0 +1,62 @@
+-----Scenarios
+-normal
+-big data
+-partitioned output table
+-partitioned steps
+-table defination create
+-caching step
+-append/overwrite upper-lowercase
+
+-----Create hive database
+create database if not exists db_stage;
+use db_stage;
+
+-----Delete hdfs table directories
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/complete_user
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/complete_user_bd
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/complete_user_optd
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/cockatoos_complete_user_case
+hdfs dfs -rm -r /user/cloudera/pratik/cockatoos_testing/cockatoos_complete_user_cache
+
+-----Create hdfs table directories
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/complete_user
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/complete_user_bd
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/complete_user_optd
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/cockatoos_complete_user_case
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/cockatoos_complete_user_cache
+
+-----Create hive tables for small data
+drop table if exists db_stage.cockatoos_complete_user;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_complete_user(id int, name string, age int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/complete_user';
+
+-----Create hive tables for big data
+drop table if exists db_stage.cockatoos_complete_user_bd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_complete_user_bd(id int, name string, company string, designation string)
+PARTITIONED BY (age int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/complete_user_bd';
+
+-----Drop table if it exists. This will be created by cockatoos
+drop table if exists db_stage.cockatoos_complete_user_optd;
+
+-----Create table for upper lower case
+drop table if exists db_stage.cockatoos_complete_user_case;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_complete_user_case(id int, name string, age int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/cockatoos_complete_user_case';
+
+-----Create table for cache
+drop table if exists db_stage.cockatoos_complete_user_case;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_complete_user_case(id int, name string, age int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/cockatoos_complete_user_case';

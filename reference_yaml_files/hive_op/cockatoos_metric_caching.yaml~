@@ -1,0 +1,38 @@
+steps:
+- stepName: user_personal_step
+  sql: SELECT
+        id,
+        name,
+        age
+       FROM
+        db_stage.cockatoos_user_personal
+  enableCaching: true
+- stepName: user_professional_step
+  sql: SELECT
+        id,
+        company,
+        designation
+       FROM
+        db_stage.cockatoos_user_professional
+  enableCaching: false
+- stepName: populate_complete_user_step
+  sql: SELECT
+        ups.id,
+        ups.name,
+        ups.age,
+        upr.company,
+        upr.designation
+       FROM
+        user_personal_step ups
+       LEFT OUTER JOIN
+        user_professional_step upr
+       ON
+        ups.id=upr.id
+output:
+- stepName: populate_complete_user_step
+  outputType: Hive
+  outputOptions:
+    tableName: cockatoos_complete_user
+    schemaName: db_stage
+    saveMode: Overwrite
+    execProperties: hive.exec.dynamic.partition=true;hive.exec.dynamic.partition.mode=nonstrict

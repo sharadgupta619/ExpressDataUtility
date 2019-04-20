@@ -1,0 +1,68 @@
+---------------------------------------------------------------------------------------Hive Preparation
+-----Create hive database
+create database if not exists db_stage;
+use db_stage;
+
+-----Create hdfs table directories
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_personal
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_professional
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/complete_user
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_personal_bd
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/user_professional_bd
+hdfs dfs -mkdir -p /user/cloudera/pratik/cockatoos_testing/complete_user_bd
+
+-----Generate data files by running DataGenerator
+
+-----Copy data files
+hdfs dfs -copyFromLocal data_files/user_personal.csv /user/cloudera/pratik/cockatoos_testing/user_personal/
+hdfs dfs -copyFromLocal data_files/user_professional.csv /user/cloudera/pratik/cockatoos_testing/user_professional/
+hdfs dfs -copyFromLocal data_files/user_personal_bd.csv /user/cloudera/pratik/cockatoos_testing/user_personal_bd/
+hdfs dfs -copyFromLocal data_files/user_professional_bd.csv /user/cloudera/pratik/cockatoos_testing/user_professional_bd/
+
+-----Create hive tables for small data
+drop table if exists db_stage.cockatoos_user_personal;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_personal(id int, name string, age int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_personal';
+
+drop table if exists db_stage.cockatoos_user_professional;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_professional(id int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_professional';
+
+drop table if exists db_stage.cockatoos_complete_user;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_complete_user(id int, name string, age int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/complete_user';
+
+-----Create hive tables for big data
+drop table if exists db_stage.cockatoos_user_personal_bd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_personal_bd(id int, name string, age int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_personal_bd';
+
+drop table if exists db_stage.cockatoos_user_professional_bd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_user_professional_bd(id int, company string, designation string)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/user_professional_bd';
+
+drop table if exists db_stage.cockatoos_complete_user_bd;
+CREATE EXTERNAL TABLE if not exists db_stage.cockatoos_complete_user_bd(id int, name string, company string, designation string)
+PARTITIONED BY (age int)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/cloudera/pratik/cockatoos_testing/complete_user_bd';
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+spark2-submit --verbose --conf spark.dynamicAllocation.enabled=false --master yarn --deploy-mode client --num-executors 1 --executor-memory 1G --executor-cores 1 --class com.datametica.cockatoos.Cockatoos cockatoos-0.0.1-SNAPSHOT-shaded.jar -c cockatoos.yaml

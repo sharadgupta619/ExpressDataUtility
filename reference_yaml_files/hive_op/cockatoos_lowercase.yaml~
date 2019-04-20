@@ -1,0 +1,9 @@
+metrics:
+- cockatoos_metric_lowercase.yaml
+variables:
+output:
+  hive:
+explain: true
+logLevel: INFO
+appName: Cockatoos_Hive_OP
+showPreviewLines: 10

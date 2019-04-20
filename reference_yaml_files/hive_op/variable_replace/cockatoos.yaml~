@@ -1,0 +1,11 @@
+metrics:
+- /home/cloudera/cockatoos_testing/hive_op/variable_replace/cockatoos_metric.yaml
+variables:
+ first_table: db_stage.cockatoos_user_personal
+ second_table: db_stage.cockatoos_user_professional
+output:
+  hive:
+explain: true
+logLevel: INFO
+appName: Cockatoos_Hive_OP_Variable_Run
+showPreviewLines: 10

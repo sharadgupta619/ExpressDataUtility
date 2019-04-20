@@ -1,0 +1,29 @@
+steps:
+  - stepName: step1
+    sql: SELECT
+      column1,column2
+      FROM
+      ${var1}.sometable
+    repartition: 1
+  - stepName: step2
+    sql: SELECT
+      cloumn3,column4
+      FROM
+      ${var1}.sometable1 join step1 on step1.column1=${var1}.sometable1
+output:
+  - stepName: step2
+    outputType: Hive
+    outputOptions:
+      tableName: sometargettablename
+      schemaName: target${var1}
+      tableDefination: CREATE EXTERNAL TABLE if not exists
+        ${var1}.sometargettablename
+        (
+        cloumn5,column6
+        )
+        ROW FORMAT DELIMITED
+        FIELDS TERMINATED BY ','
+        STORED AS TEXTFILE
+        LOCATION '<Anylocation>'
+      saveMode: Overwrite
+      execProperties: hive.exec.dynamic.partition=true;hive.exec.dynamic.partition.mode=nonstrict

@@ -1,0 +1,2 @@
+spark2-submit --verbose --master yarn --deploy-mode client --num-executors <any> --executor-memory <any> --executor-cores <any>
+--class com.DataUtilityTransform.ExpressDataUtility.ExpressDataUtility /home/cloudera/ExpressDataUtility-0.0.1-SNAPSHOT-shaded.jar -c /home/cloudera/ExpressDataUtility.yaml
